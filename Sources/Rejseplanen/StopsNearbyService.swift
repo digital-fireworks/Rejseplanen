@@ -24,10 +24,10 @@ public enum RejseplanenProduct {
     case ferry
     case metro
     
-    static let trains: [RejseplanenProduct] = [.interCityTrains, .interCityFastTrains, .regionalTrains, .sTrains, .otherTrains]
-    static let busses: [RejseplanenProduct] = [.bus, .expressBus, .nightBus, .otherBusses]
-    static let metros: [RejseplanenProduct] = [.metro]
-    static let ferries: [RejseplanenProduct] = [.ferry]
+    public static let trains: [RejseplanenProduct] = [.interCityTrains, .interCityFastTrains, .regionalTrains, .sTrains, .otherTrains]
+    public static let busses: [RejseplanenProduct] = [.bus, .expressBus, .nightBus, .otherBusses]
+    public static let metros: [RejseplanenProduct] = [.metro]
+    public static let ferries: [RejseplanenProduct] = [.ferry]
     
 }
 
