@@ -73,7 +73,7 @@ private func bitmaskValueForProduct(_ type: RejseplanenProduct) -> Int {
  :returns: An 11 character long bitmask string. Example for train product types: 000000011111
  */
 internal func bitmaskStringForProducts(_ types: [RejseplanenProduct]) -> String {
-    var value = 2048
+    var value = 1024
     for type in types {
         value = value | bitmaskValueForProduct(type)
     }
