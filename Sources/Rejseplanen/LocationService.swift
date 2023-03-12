@@ -11,8 +11,8 @@ import CoreLocation
 public typealias Locations = (stops: [Stop], addresses: [Address], pointsOfInterest: [PointOfInterest])
 
 public class Location {
-    let name: String
-    let location: CLLocation
+    public let name: String
+    public let location: CLLocation
     
     internal init(name: String, x: Double, y: Double) {
         self.name = name
@@ -28,9 +28,9 @@ extension Location: CustomStringConvertible {
     }
 }
 
-public class Stop: Location {
+public class Stop: Location, Identifiable {
     
-    let id: String
+    public let id: String
     
     internal init(id: String, name: String, x: Double, y: Double) {
         self.id = id

@@ -7,6 +7,10 @@
 
 import Foundation
 
+enum RejseplanenDateFormatterError: Error {
+    case timeAndDateFormateError
+}
+
 class RejseplanenDateFormatter: DateFormatter {
     
     static let shared = RejseplanenDateFormatter()
@@ -14,10 +18,14 @@ class RejseplanenDateFormatter: DateFormatter {
     private let rejseplanenDateFormat = "dd.MM.yy"
     private let rejseplanenTimeFormat = "HH:mm"
 
-    func dateFromRejseplanenTime(_ time: String, andDate date: String) -> Date? {
+    func dateFromRejseplanenTime(_ time: String, andDate date: String) throws -> Date {
         self.dateFormat = self.rejseplanenTimeFormat + " " + self.rejseplanenDateFormat
         let string = time + " " + date
-        return self.date(from: string)
+        if let date = self.date(from: string) {
+            return date
+        } else {
+            throw RejseplanenDateFormatterError.timeAndDateFormateError
+        }
     }
 
     func dateStringForDate(_ date: Date) -> String {

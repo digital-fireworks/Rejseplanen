@@ -15,7 +15,7 @@ public class Rejseplanen {
     private let stopsNearbyService: StopsNearbyService
     private let departureBoardService: DepartureBoardService
     
-    init() {
+    public init() {
         self.locationService = LocationService()
         self.stopsNearbyService = StopsNearbyService(locationService: self.locationService)
         self.departureBoardService = DepartureBoardService()

@@ -19,18 +19,19 @@ enum DepartureType {
     case teleBus
     case ferry
     case metro
+    case unknown
+    
+    
 }
 
-public struct Departure: Codable {
+public struct Departure: Decodable {
     
     let name: String
     let type: String
     let stop: String
-    let time: String
-    let date: String
+    let date: Date
     let track: String?
-    let realtimeTime: String?
-    let realtimeDate: String?
+    let realTimeDate: Date?
     let realtimeTrack: String?
     let direction: String?
     let messages: String?
@@ -53,16 +54,41 @@ public struct Departure: Codable {
         case journeyDetails = "JourneyDetailRef"
     }
     
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.name = try container.decode(String.self, forKey: .name)
+        self.type = try container.decode(String.self, forKey: .type)
+        self.stop = try container.decode(String.self, forKey: .stop)
+        
+        let time = try container.decode(String.self, forKey: .time)
+        let date = try container.decode(String.self, forKey: .date)
+        self.date = try RejseplanenDateFormatter.shared.dateFromRejseplanenTime(time, andDate: date)
+        
+        self.track = try container.decodeIfPresent(String.self, forKey: .track)
+        if let realtimeTime = try container.decodeIfPresent(String.self, forKey: .realtimeTime), let realtimeDate = try container.decodeIfPresent(String.self, forKey: .realtimeDate) {
+            self.realTimeDate = try RejseplanenDateFormatter.shared.dateFromRejseplanenTime(realtimeTime, andDate: realtimeDate)
+        } else {
+            self.realTimeDate = nil
+        }
+        
+        self.realtimeTrack = try container.decodeIfPresent(String.self, forKey: .realtimeTrack)
+        
+        self.direction = try container.decodeIfPresent(String.self, forKey: .direction)
+        self.messages = try container.decodeIfPresent(String.self, forKey: .messages)
+        self.finalStop = try container.decodeIfPresent(String.self, forKey: .finalStop)
+        self.journeyDetails = try container.decodeIfPresent(JourneyDetailsRef.self, forKey: .journeyDetails)
+    }
+    
 }
 
 extension Departure: CustomStringConvertible {
     
     public var description: String {
-        return "Departure: \(self.name), \(self.type), \(self.time)"
+        return "Departure: \(self.name), \(self.type), \(self.date)"
     }
 }
 
-public struct DepartureBoard: Codable {
+public struct DepartureBoard: Decodable {
     public internal(set) var stop: Stop!
     let departures: [Departure]
     
@@ -71,7 +97,7 @@ public struct DepartureBoard: Codable {
     }
 }
 
-struct DepartureBoardContainer: Codable {
+struct DepartureBoardContainer: Decodable {
     let departureBoard: DepartureBoard
     
     enum CodingKeys: String, CodingKey {
