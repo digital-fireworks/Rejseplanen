@@ -24,7 +24,7 @@ enum DepartureType {
     
 }
 
-public struct Departure: Decodable {
+public struct Departure: Decodable, Identifiable {
     
     let name: String
     let type: String
@@ -79,9 +79,6 @@ public struct Departure: Decodable {
         self.journeyDetails = try container.decodeIfPresent(JourneyDetailsRef.self, forKey: .journeyDetails)
     }
     
-}
-
-public extension Departure: Identifiable {
     public var id: Int {
         var hasher = Hasher()
         hasher.combine(self.name)
@@ -91,6 +88,7 @@ public extension Departure: Identifiable {
 
         return hasher.finalize()
     }
+    
 }
 
 extension Departure: CustomStringConvertible {
