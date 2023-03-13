@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum DepartureType {
+public enum DepartureType {
     case intercity
     case lyn
     case regional
@@ -24,19 +24,19 @@ enum DepartureType {
     
 }
 
-public struct Departure: Decodable, Identifiable {
+public struct Departure: Decodable, Identifiable, CustomStringConvertible {
     
-    let name: String
-    let type: String
-    let stop: String
-    let date: Date
-    let track: String?
-    let realTimeDate: Date?
-    let realtimeTrack: String?
-    let direction: String?
-    let messages: String?
-    let finalStop: String?
-    let journeyDetails: JourneyDetailsRef?
+    public let name: String
+    public let type: String
+    public let stop: String
+    public let date: Date
+    public let track: String?
+    public let realTimeDate: Date?
+    public let realtimeTrack: String?
+    public let direction: String?
+    public let messages: String?
+    public let finalStop: String?
+    public let journeyDetails: JourneyDetailsRef?
     
     enum CodingKeys: String, CodingKey {
         case name = "name"
@@ -89,13 +89,10 @@ public struct Departure: Decodable, Identifiable {
         return hasher.finalize()
     }
     
-}
-
-extension Departure: CustomStringConvertible {
-    
     public var description: String {
         return "Departure: \(self.name), \(self.type), \(self.date)"
     }
+    
 }
 
 public struct DepartureBoard: Decodable {
@@ -115,8 +112,8 @@ struct DepartureBoardContainer: Decodable {
     }
 }
 
-struct JourneyDetailsRef: Codable {
-    let ref: String
+public struct JourneyDetailsRef: Codable {
+    public let ref: String
     
     enum CodingKeys: String, CodingKey {
         case ref = "ref"
