@@ -81,6 +81,18 @@ public struct Departure: Decodable {
     
 }
 
+extension Departure: Identifiable {
+    public var id: Int {
+        var hasher = Hasher()
+        hasher.combine(self.name)
+        hasher.combine(self.type)
+        hasher.combine(self.stop)
+        hasher.combine(self.date)
+
+        return hasher.finalize()
+    }
+}
+
 extension Departure: CustomStringConvertible {
     
     public var description: String {
