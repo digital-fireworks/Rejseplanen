@@ -100,7 +100,7 @@ extension Departure: CustomStringConvertible {
 
 public struct DepartureBoard: Decodable {
     public internal(set) var stop: Stop!
-    let departures: [Departure]
+    public let departures: [Departure]
     
     enum CodingKeys: String, CodingKey {
         case departures = "Departure"
