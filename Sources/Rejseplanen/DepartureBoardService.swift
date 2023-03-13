@@ -81,7 +81,7 @@ public struct Departure: Decodable {
     
 }
 
-extension Departure: Identifiable {
+public extension Departure: Identifiable {
     public var id: Int {
         var hasher = Hasher()
         hasher.combine(self.name)
