@@ -7,27 +7,41 @@
 
 import Foundation
 
-public enum DepartureType {
-    case intercity
-    case lyn
-    case regional
-    case stog
-    case tog
-    case bus
-    case expressBus
-    case nightBus
-    case teleBus
-    case ferry
-    case metro
-    case unknown
-    
-    
+/**
+ <xs:enumeration value="IC"/>
+ <xs:enumeration value="LYN"/>
+ <xs:enumeration value="REG"/>
+ <xs:enumeration value="S"/>
+ <xs:enumeration value="TOG"/>
+ <xs:enumeration value="BUS"/>
+ <xs:enumeration value="EXB"/>
+ <xs:enumeration value="NB"/>
+ <xs:enumeration value="TB"/>
+ <xs:enumeration value="F"/>
+ <xs:enumeration value="M"/>
+ <xs:enumeration value="LET"/>
+ */
+
+public enum DepartureType: String {
+    case intercity = "IC"
+    case lyn = "LYN"
+    case regional = "REG"
+    case stog = "S"
+    case tog = "TOG"
+    case bus = "BUS"
+    case expressBus = "EXB"
+    case nightBus = "NB"
+    case teleBus = "TB"
+    case ferry = "F"
+    case metro = "M"
+    case lightRail = "LET"
+    case unknown = "UNKNOWN"
 }
 
 public struct Departure: Decodable, Identifiable, CustomStringConvertible {
     
     public let name: String
-    public let type: String
+    public let type: DepartureType
     public let stop: String
     public let date: Date
     public let track: String?
@@ -57,7 +71,10 @@ public struct Departure: Decodable, Identifiable, CustomStringConvertible {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.name = try container.decode(String.self, forKey: .name)
-        self.type = try container.decode(String.self, forKey: .type)
+       
+        let typeString = try container.decode(String.self, forKey: .type)
+        self.type = DepartureType(rawValue: typeString) ?? .unknown
+        
         self.stop = try container.decode(String.self, forKey: .stop)
         
         let time = try container.decode(String.self, forKey: .time)
