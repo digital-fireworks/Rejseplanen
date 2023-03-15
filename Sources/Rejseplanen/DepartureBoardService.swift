@@ -68,6 +68,22 @@ public struct Departure: Decodable, Identifiable, CustomStringConvertible {
         case journeyDetails = "JourneyDetailRef"
     }
     
+    /**
+     Use this function to create departure object for test use.
+    */
+    public static func fromJSON(json: String) -> Departure? {
+        guard let data = json.data(using: .utf8) else {
+            return nil
+        }
+        
+        do {
+            return try JSONDecoder().decode(Departure.self, from: data)
+        } catch {
+            print("Failed to create departure from json: \(json)")
+            return nil
+        }
+    }
+    
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.name = try container.decode(String.self, forKey: .name)
