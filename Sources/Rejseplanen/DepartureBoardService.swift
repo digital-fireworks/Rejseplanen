@@ -48,6 +48,7 @@ public struct Departure: Decodable, Identifiable, CustomStringConvertible {
     public let realTimeDate: Date?
     public let realtimeTrack: String?
     public let direction: String?
+    public let cancelled: String?
     public let messages: String?
     public let finalStop: String?
     public let journeyDetails: JourneyDetailsRef?
@@ -63,6 +64,7 @@ public struct Departure: Decodable, Identifiable, CustomStringConvertible {
         case realtimeDate = "rtDate"
         case realtimeTrack = "rtTrack"
         case direction = "direction"
+        case cancelled = "cancelled"
         case messages = "messages"
         case finalStop = "finalStop"
         case journeyDetails = "JourneyDetailRef"
@@ -107,6 +109,7 @@ public struct Departure: Decodable, Identifiable, CustomStringConvertible {
         self.realtimeTrack = try container.decodeIfPresent(String.self, forKey: .realtimeTrack)
         
         self.direction = try container.decodeIfPresent(String.self, forKey: .direction)
+        self.cancelled = try container.decodeIfPresent(String.self, forKey: .cancelled)
         self.messages = try container.decodeIfPresent(String.self, forKey: .messages)
         self.finalStop = try container.decodeIfPresent(String.self, forKey: .finalStop)
         self.journeyDetails = try container.decodeIfPresent(JourneyDetailsRef.self, forKey: .journeyDetails)
