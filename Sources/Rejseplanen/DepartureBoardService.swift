@@ -49,7 +49,7 @@ public struct Departure: Decodable, Identifiable, CustomStringConvertible {
     public let realtimeTrack: String?
     public let direction: String?
     public let cancelled: Bool?
-    public let messages: Int?
+    public let messages: Int
     public let finalStop: String?
     public let journeyDetails: JourneyDetailsRef?
     
@@ -114,7 +114,7 @@ public struct Departure: Decodable, Identifiable, CustomStringConvertible {
         self.cancelled = cancelledString == "true" ? true : false
         
         let messagesString = try container.decodeIfPresent(String.self, forKey: .messages) ?? "0"
-        self.messages = Int(messagesString)
+        self.messages = Int(messagesString) ?? 0
         
         self.finalStop = try container.decodeIfPresent(String.self, forKey: .finalStop)
         self.journeyDetails = try container.decodeIfPresent(JourneyDetailsRef.self, forKey: .journeyDetails)
