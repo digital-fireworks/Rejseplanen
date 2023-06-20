@@ -92,11 +92,11 @@ internal class StopsNearbyService {
     // Rejseplanen doesn't seem to respect the maxCount parameter.
     func stopsNearby(location: CLLocation, products: [RejseplanenProduct]?, maxRadius: CLLocationDistance?, maxCount: Int?) async throws -> Stops {
         
-        let stopsNearbyURL = self.stopsNearbyServiceURL(location: location, products: products, maxRadius: maxRadius, maxCount: maxCount)
+        let url = self.stopsNearbyServiceURL(location: location, products: products, maxRadius: maxRadius, maxCount: maxCount)
         
-        debugPrint(stopsNearbyURL.description)
+        debugPrint("Requesting Rejseplanen stops nearby service: " + url.absoluteString)
         
-        let list = try await self.locationService.locationList(url: stopsNearbyURL)
+        let list = try await self.locationService.locationList(url: url)
         let stops = list.stopLocations.compactMap { Stop(stopLocation: $0) }
         return stops
     }

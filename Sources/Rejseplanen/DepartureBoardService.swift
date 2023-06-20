@@ -165,6 +165,7 @@ class DepartureBoardService {
     
     func departureBoard(forStop stop: Stop) async throws -> DepartureBoard {
         let url = self.departureBoardURL(forStop: stop)
+        debugPrint("Requesting Rejseplanen departure service: " + url.absoluteString)
         var departureBoard = try await self.departureBoard(url: url)
         departureBoard.stop = stop
         return departureBoard
@@ -179,7 +180,7 @@ class DepartureBoardService {
     }
     
     private func departureBoard(url: URL) async throws -> DepartureBoard {
-        
+
         let (data, response) = try await URLSession.shared.data(from: url)
         
         guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {

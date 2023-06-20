@@ -85,8 +85,9 @@ public class PointOfInterest: Location {
 internal class LocationService {
     
     func location(query: String) async throws -> Locations {
-        let locationListURL = self.locationServiceURL(searchString: query)
-        let list = try await self.locationList(url: locationListURL)
+        let url = self.locationServiceURL(searchString: query)
+        debugPrint("Requesting Rejseplanen location service: " + url.absoluteString)
+        let list = try await self.locationList(url: url)
         
         let stops = list.stopLocations.compactMap { Stop(stopLocation: $0) }
         let addresses = list.coordLocations.compactMap { Address(coordLocation: $0) }
@@ -104,7 +105,7 @@ internal class LocationService {
     }
     
     internal func locationList(url: URL) async throws -> LocationList {
-        
+
         let (data, response) = try await URLSession.shared.data(from: url)
         
         guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
