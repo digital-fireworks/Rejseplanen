@@ -38,7 +38,7 @@ public enum DepartureType: String {
     case unknown = "UNKNOWN"
 }
 
-public struct Departure: Decodable, Identifiable, CustomStringConvertible {
+public struct Departure: Decodable, Identifiable, CustomStringConvertible, Equatable {
     
     public let name: String
     public let type: DepartureType
@@ -118,6 +118,10 @@ public struct Departure: Decodable, Identifiable, CustomStringConvertible {
         
         self.finalStop = try container.decodeIfPresent(String.self, forKey: .finalStop)
         self.journeyDetails = try container.decodeIfPresent(JourneyDetailsRef.self, forKey: .journeyDetails)
+    }
+    
+    public static func == (lhs: Departure, rhs: Departure) -> Bool {
+        return lhs.id == rhs.id
     }
     
     public var id: Int {
