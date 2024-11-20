@@ -7,11 +7,11 @@
 
 import Foundation
 
-enum RejseplanenDateFormatterError: Error {
+internal enum RejseplanenDateFormatterError: Error {
     case timeAndDateFormateError
 }
 
-class RejseplanenDateFormatter: DateFormatter {
+internal class RejseplanenDateFormatter: DateFormatter, @unchecked Sendable {
     
     static let shared = RejseplanenDateFormatter()
 

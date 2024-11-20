@@ -1,26 +1,11 @@
 //
-//  DepartureBoardService.swift
-//  
+//  Departure.swift
+//  Rejseplanen
 //
-//  Created by Fredrik Nannestad on 09/11/2022.
+//  Created by Fredrik Nannestad on 20/11/2024.
 //
 
 import Foundation
-
-/**
- <xs:enumeration value="IC"/>
- <xs:enumeration value="LYN"/>
- <xs:enumeration value="REG"/>
- <xs:enumeration value="S"/>
- <xs:enumeration value="TOG"/>
- <xs:enumeration value="BUS"/>
- <xs:enumeration value="EXB"/>
- <xs:enumeration value="NB"/>
- <xs:enumeration value="TB"/>
- <xs:enumeration value="F"/>
- <xs:enumeration value="M"/>
- <xs:enumeration value="LET"/>
- */
 
 public enum DepartureType: String {
     case intercity = "IC"
@@ -68,22 +53,6 @@ public struct Departure: Decodable, Identifiable, CustomStringConvertible, Equat
         case messages = "messages"
         case finalStop = "finalStop"
         case journeyDetails = "JourneyDetailRef"
-    }
-    
-    /**
-     Use this function to create departure object for test use.
-    */
-    public static func fromJSON(json: String) -> Departure? {
-        guard let data = json.data(using: .utf8) else {
-            return nil
-        }
-        
-        do {
-            return try JSONDecoder().decode(Departure.self, from: data)
-        } catch {
-            print("Failed to create departure from json: \(json)")
-            return nil
-        }
     }
     
     public init(from decoder: Decoder) throws {
@@ -140,78 +109,24 @@ public struct Departure: Decodable, Identifiable, CustomStringConvertible, Equat
     
 }
 
-public struct DepartureBoard: Decodable {
-    public internal(set) var stop: Stop!
-    public let departures: [Departure]
-    
-    enum CodingKeys: String, CodingKey {
-        case departures = "Departure"
-    }
-}
+// MARK: Debug helpers
 
-struct DepartureBoardContainer: Decodable {
-    let departureBoard: DepartureBoard
-    
-    enum CodingKeys: String, CodingKey {
-        case departureBoard = "DepartureBoard"
-    }
-}
-
-public struct JourneyDetailsRef: Codable {
-    public let ref: String
-    
-    enum CodingKeys: String, CodingKey {
-        case ref = "ref"
-    }
-}
-
-class DepartureBoardService {
-    
-    func departureBoard(forStop stop: Stop) async throws -> DepartureBoard {
-        let url = self.departureBoardURL(forStop: stop)
-        debugPrint("Requesting Rejseplanen departure service: " + url.absoluteString)
-        var departureBoard = try await self.departureBoard(url: url)
-        departureBoard.stop = stop
-        return departureBoard
-    }
-    
-    private func departureBoardURL(forStop stop: Stop) -> URL {
-        var components = URLComponents(string: rejseplanenBaseURLString + "departureBoard")!
-        let queryItems = [URLQueryItem(name: "id", value: "\(stop.id)"),
-                          URLQueryItem(name: "format", value: "json")]
-        components.queryItems = queryItems
-        return components.url!
-    }
-    
-    private func departureBoard(url: URL) async throws -> DepartureBoard {
-
-        let (data, response) = try await URLSession.shared.data(from: url)
-        
-        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-            throw RejseplanenError.invalidServerResponse(response: response)
+#if DEBUG
+public extension Departure {
+    /**
+     Use this function to create departure object for test use.
+    */
+    static func fromJSON(json: String) -> Departure? {
+        guard let data = json.data(using: .utf8) else {
+            return nil
         }
         
         do {
-            let container = try JSONDecoder().decode(DepartureBoardContainer.self, from: data)
-            return container.departureBoard
-        } catch let error as DecodingError {
-            switch error {
-            case .dataCorrupted(let context):
-                print(context.codingPath.description)
-            case .keyNotFound(let key, let context):
-                print(context.underlyingError?.localizedDescription ?? "")
-                print("Key not found: \(key)")
-            case .valueNotFound(let type, let context):
-                print(context.underlyingError?.localizedDescription ?? "")
-                print("Type not found: \(type)")
-            case .typeMismatch(let type, let context):
-                print(context.codingPath.description)
-                print("Type mismatch: \(type)")
-            default:
-                print("Default")
-            }
-            throw RejseplanenError.jsonDecoding(error: error)
+            return try JSONDecoder().decode(Departure.self, from: data)
+        } catch {
+            print("Failed to create departure from json: \(json)")
+            return nil
         }
     }
-    
 }
+#endif
