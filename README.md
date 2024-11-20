@@ -1,7 +1,7 @@
 # Rejseplanen
 
 ![Swift](https://img.shields.io/badge/Swift-5.7-orange.svg)
-![Platforms](https://img.shields.io/badge/Platforms-iOS%20|%20macOS%20|%20tvOS%20|%20watchOS-lightgrey.svg)
+![Platforms](https://img.shields.io/badge/Platforms-iOS%20.svg)
 [![License](https://img.shields.io/badge/License-MIT-lightgrey.svg)](LICENSE)
 
 Rejseplanen is a Swift package for integrating with the Danish public transportation Rejseplanen API. It provides functionality for fetching location data, stops, nearby stations, and departure boards, making it easy to build apps that leverage public transportation data.
