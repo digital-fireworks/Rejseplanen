@@ -28,7 +28,7 @@ extension Location: CustomStringConvertible {
     }
 }
 
-public class Stop: Location, Identifiable {
+public class Stop: Location, Identifiable, Equatable {
     
     public let id: String
     
@@ -49,6 +49,10 @@ public class Stop: Location, Identifiable {
     
     public override var description: String {
         return "Stop, " + self.id + ", " + super.description
+    }
+    
+    public static func == (lhs: Stop, rhs: Stop) -> Bool {
+        return lhs.id == rhs.id
     }
 }
 
