@@ -42,6 +42,7 @@ public class Rejseplanen {
      Fetches the departure board for a specific stop.
      
      - Parameter stop: The `Stop` for which to fetch the departure board.
+     - Parameter type: The  `DepartureBoardType` determines which types of departures, trains, busses, metros or all, are returned with the DepartureBoard.
      - Returns: A `DepartureBoard` containing upcoming departures from the stop.
      - Throws: A `RejseplanenError` if an unexpected error occurs or the data cannot be retrieved.
      */
