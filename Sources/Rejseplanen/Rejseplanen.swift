@@ -46,7 +46,7 @@ public class Rejseplanen {
      - Returns: A `DepartureBoard` containing upcoming departures from the stop.
      - Throws: A `RejseplanenError` if an unexpected error occurs or the data cannot be retrieved.
      */
-    public func departureBoard(ofType type: DepartureBoardType, forStop stop: Stop) async throws -> DepartureBoard {
+    public func departureBoard(ofType type: DepartureBoardType = .all, forStop stop: Stop) async throws -> DepartureBoard {
         return try await self.departureBoardService.departureBoard(ofType: type, forStop: stop)
     }
     

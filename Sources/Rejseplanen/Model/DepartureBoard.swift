@@ -16,7 +16,7 @@ public enum DepartureBoardType {
     internal var queryItems: [URLQueryItem] {
         switch self {
         case .all:
-            return [.init(name: "useTog", value: "1"), .init(name: "useBus", value: "1"), .init(name: "useMetro", value: "1")]
+            return [] // No paramters is required to return departures for all types.
         case .trains:
             return [.init(name: "useTog", value: "1"), .init(name: "useBus", value: "0"), .init(name: "useMetro", value: "0")]
         case .busses:
