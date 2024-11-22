@@ -22,7 +22,7 @@ final class RejseplanenTests: XCTestCase {
     
     func testDepartureBoard01() async throws {
         let stop = Stop(id: "008600626", name: "København H", x: 12.565562, y: 55.673063)
-        let departureBoard = try await self.rejseplanen.departureBoard(forStop: stop)
+        let departureBoard = try await self.rejseplanen.departureBoard(ofType: .all, forStop: stop)
         departureBoard.departures.forEach { print($0.description) }
     }
     

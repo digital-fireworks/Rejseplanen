@@ -5,7 +5,6 @@
 //  Created by Fredrik Nannestad on 20/11/2024.
 //
 
-
 public enum RejseplanenProduct {
     
     case interCityTrains

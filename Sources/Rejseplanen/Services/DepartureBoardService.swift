@@ -18,18 +18,20 @@ private struct DepartureBoardContainer: Decodable {
 
 internal class DepartureBoardService {
     
-    func departureBoard(forStop stop: Stop) async throws -> DepartureBoard {
-        let url = self.departureBoardURL(forStop: stop)
+    func departureBoard(ofType type: DepartureBoardType, forStop stop: Stop) async throws -> DepartureBoard {
+        let url = self.departureBoardURL(ofType: type, forStop: stop)
         debugPrint("Requesting Rejseplanen departure service: " + url.absoluteString)
         var departureBoard = try await self.departureBoard(url: url)
         departureBoard.stop = stop
+        departureBoard.type = type
         return departureBoard
     }
     
-    private func departureBoardURL(forStop stop: Stop) -> URL {
+    private func departureBoardURL(ofType type: DepartureBoardType, forStop stop: Stop) -> URL {
         var components = URLComponents(string: rejseplanenBaseURLString + "departureBoard")!
-        let queryItems = [URLQueryItem(name: "id", value: "\(stop.id)"),
+        var queryItems = [URLQueryItem(name: "id", value: "\(stop.id)"),
                           URLQueryItem(name: "format", value: "json")]
+        queryItems.append(contentsOf: type.queryItems)
         components.queryItems = queryItems
         return components.url!
     }
